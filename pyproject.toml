@@ -1,7 +1,7 @@
 [project]
 name = "fxlab"
 version = "0.1.0"
-description = "Add your description here"
+description = "EUR/USD trading assistant: technical analysis, news analysis and a combined signal"
 readme = "README.md"
 authors = [
     { name = "Mursyid Hassan", email = "290976846+Moosesid@users.noreply.github.com" }
