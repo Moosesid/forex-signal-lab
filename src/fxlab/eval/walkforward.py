@@ -13,12 +13,27 @@ class Fold:
     test: np.ndarray
 
 
-def walk_forward_splits(n_rows: int, train_size: int, test_size: int) -> Iterator[Fold]:
+def walk_forward_splits(
+    n_rows: int,
+    train_size: int,
+    test_size: int,
+    *,
+    horizon: int = 1,
+    purge: int = 1,
+) -> Iterator[Fold]:
+    if horizon < 1:
+        raise ValueError("horizon must be at least 1")
+    if purge < horizon:
+        raise ValueError(
+            f"purge ({purge}) must be >= horizon ({horizon}), "
+            "otherwise training labels reach into the test window"
+        )
+
     number = 0
     train_start = 0
     while True:
         train_end = train_start + train_size
-        test_start = train_end
+        test_start = train_end + purge
         test_end = test_start + test_size
         if test_end > n_rows:
             break
