@@ -20,6 +20,7 @@ def walk_forward_splits(
     *,
     horizon: int = 1,
     purge: int = 1,
+    expanding: bool = False,
 ) -> Iterator[Fold]:
     if horizon < 1:
         raise ValueError("horizon must be at least 1")
@@ -39,7 +40,7 @@ def walk_forward_splits(
             break
         yield Fold(
             number=number,
-            train=np.arange(train_start, train_end),
+            train=np.arange(0 if expanding else train_start, train_end),
             test=np.arange(test_start, test_end),
         )
         number += 1

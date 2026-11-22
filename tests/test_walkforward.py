@@ -44,3 +44,17 @@ def test_purge_gap_covers_horizon():
 def test_purge_smaller_than_horizon_is_rejected():
     with pytest.raises(ValueError, match="purge"):
         list(walk_forward_splits(1000, 300, 50, horizon=5, purge=2))
+
+
+def test_rolling_window_keeps_fixed_size():
+    for fold in _folds():
+        assert len(fold.train) == 300
+
+
+def test_expanding_window_starts_at_zero_and_grows():
+    folds = list(walk_forward_splits(1000, 300, 50, expanding=True))
+    for fold in folds:
+        assert fold.train[0] == 0
+    sizes = [len(fold.train) for fold in folds]
+    assert sizes == sorted(sizes)
+    assert sizes[0] < sizes[-1]
